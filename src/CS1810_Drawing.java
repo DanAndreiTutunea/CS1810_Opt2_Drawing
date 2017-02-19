@@ -37,7 +37,7 @@ class Path{
 class Route{
 
     private int shape = 0, rectangleWidth = 0, rectangleHeight = 0, triangleSide1 = 0, triangleSide2 = 0, triangleSide3 = 0;
-    private triangleAngle12 = 0, trinagleAngle13 = 0, trinagleAngle23 = 0;
+    private int triangleAngle12 = 0, trinagleAngle13 = 0, trinagleAngle23 = 0;
 
     ArrayList<Path> pathList = new ArrayList<Path>();
 
@@ -58,12 +58,14 @@ class Route{
         rectangleWidth = 40;
         rectangleHeight = 40;
 
-        switch(shape){
+        switch (shape){
 
             case 1: //Rectangle
                 error = calculateRouteRectangle(rectangleWidth, rectangleHeight);
+                break;
             case 2: //Triangle
                 error = calculateRouteTriangle(triangleSide1, triangleSide2, triangleSide3);
+                break;
         }
 
 
@@ -75,17 +77,23 @@ class Route{
 
         //creating dummy path List - eventually should be properly calculated
 
-        Path testMove1 = new Path(100, 100, 1000);
-        Path testMove2 = new Path(90, 0, 1000);
-        Path testMove3 = new Path(100, 100, 1000);
-        Path testMove4 = new Path(90, 0, 1000);
-        Path testMove5 = new Path(100, 100, 1000);
-        Path testMove6 = new Path(90, 0, 1000);
-        Path testMove7 = new Path(100, 100, 1000);
-        Path testMove8 = new Path(90, 0, 1000);
+        Path testMove101 = new Path(100, 100, 1000);
+        Path testMove102 = new Path(90, 0, 1000);
+        Path testMove103 = new Path(100, 100, 1000);
+        Path testMove104 = new Path(90, 0, 1000);
+        Path testMove105 = new Path(100, 100, 1000);
+        Path testMove106 = new Path(90, 0, 1000);
+        Path testMove107 = new Path(100, 100, 1000);
+        Path testMove108 = new Path(90, 0, 1000);
 
-        pathList.add(testMove1);
-        pathList.add(testMove2);
+        pathList.add(testMove101);
+        pathList.add(testMove102);
+        pathList.add(testMove103);
+        pathList.add(testMove104);
+        pathList.add(testMove105);
+        pathList.add(testMove106);
+        pathList.add(testMove107);
+        pathList.add(testMove108);
 
         noOfMoves = pathList.size();
 
@@ -99,15 +107,20 @@ class Route{
 
         //creating dummy path List - eventually should be properly calculated
 
-        Path testMove1 = new Path(100, 100, 1000);
-        Path testMove2 = new Path(120, 0, 1000);
-        Path testMove3 = new Path(100, 100, 1000);
-        Path testMove4 = new Path(120, 0, 1000);
-        Path testMove5 = new Path(100, 100, 1000);
-        Path testMove6 = new Path(120, 0, 1000);
+        Path testMove201 = new Path(150, 150, 1000);
+        Path testMove202 = new Path(120, 0, 1000);
+        Path testMove203 = new Path(150, 150, 1000);
+        Path testMove204 = new Path(120, 0, 1000);
+        Path testMove205 = new Path(150, 150, 1000);
+        Path testMove206 = new Path(120, 0, 1000);
 
-        pathList.add(testMove1);
-        pathList.add(testMove2);
+        pathList.add(testMove201);
+        pathList.add(testMove202);
+        pathList.add(testMove203);
+        pathList.add(testMove204);
+        pathList.add(testMove205);
+        pathList.add(testMove206);
+
 
         noOfMoves = pathList.size();
 
@@ -131,7 +144,7 @@ class Route{
     }
 
 
-    public Path getPath(){
+    public ArrayList<Path> getPath(){
 
         return(pathList);
 
@@ -157,7 +170,7 @@ public class CS1810_Drawing {
 
         Route testRoute = new Route();
 
-        //testRoute.printSteps();
+        testRoute.printSteps();
 
         movementError = executeMovement(HK_14, testRoute);
         
@@ -174,9 +187,10 @@ public class CS1810_Drawing {
 
         ArrayList<Path> tempPath = new ArrayList<Path>();
 
-        for(int i = 0 ; i < routeToDo.pathList.size(); i++){
+        tempPath = routeToDo.getPath();
+
+        for(int i = 0 ; i < tempPath.size(); i++){
         
-            tempPath = routeToDo.getPath().clone();
             lhsSpeed = tempPath.get(i).getLHSspeed();
             rhsSpeed = tempPath.get(i).getRHSspeed();
             moveTime = tempPath.get(i).getMoveTime();
