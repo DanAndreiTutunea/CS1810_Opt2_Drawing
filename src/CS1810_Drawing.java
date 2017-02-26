@@ -4,6 +4,8 @@ import edu.cmu.ri.createlab.terk.robot.finch.Finch;
 
 
 
+
+
 class Path{
     
     private int lhsWheelSpeed, rhsWheelSpeed, timeMiliSeconds, timeSeconds;
@@ -34,15 +36,77 @@ class Path{
 }
 
 
+
+class Shape{
+
+    private int noOfEdges = 0;
+    private int noOfAngles = 0;
+    ArrayList<Integer> elements = new ArrayList<Integer>();
+
+    Shape (String shapeType, String shapeString){
+
+        int i = 0, j = 0;
+        String[] stringParts = shapeString.split(CS1810_Drawing.delimeter);
+
+        switch(shapeType){
+
+            case "R":
+                // shape is a rectangle
+                // to use rectangle class here !!! - the following code is for testing only
+                for (j = 0; j < stringParts.length ; ++j){
+                    elements.add(Integer.parseInt(stringParts[j]));
+                    noOfEdges++;
+                    elements.add(CS1810_Drawing.rectangleAngle);
+                    noOfAngles++;
+                }
+                for (j = 0; j < stringParts.length ; ++j){
+                    elements.add(Integer.parseInt(stringParts[j]));
+                    noOfEdges++;
+                    elements.add(CS1810_Drawing.rectangleAngle);
+                    noOfAngles++;
+                }
+            break;
+            case "T":
+                // shape is a triangle
+            
+            break;
+        }
+        
+    }
+
+    public int getShapeNoOfEdges(){
+        return(noOfEdges);
+    }
+
+    public int getShapeNoOfAngles(){
+        return(noOfAngles);
+    }
+
+    public int getShapeSide(int x){
+        return(elements.get((x-1)*2));
+    }
+
+    public int getShapeAngle(int x){
+        return(elements.get(x*2-1));
+    }
+
+}
+
+/*
+class Rectangle{
+
+
+    private int rectangleEdge1 = 0;
+    private int rectangleEdge2 = 0;
+}
+*/
+
 class Route{
 
-    private int shape = 0, rectangleWidth = 0, rectangleHeight = 0, triangleSide1 = 0, triangleSide2 = 0, triangleSide3 = 0;
-    private int triangleAngle12 = 0, trinagleAngle13 = 0, trinagleAngle23 = 0;
-
+    Shape shapeToDraw;
     ArrayList<Path> pathList = new ArrayList<Path>();
-
-    private int noOfMoves = 0;
     private int error = 0;
+
         /*
             0 - no error;
             1 - 
@@ -50,28 +114,50 @@ class Route{
         */
 
 
-    Route (){ //argument emply for testing purposes - eventually to become string of command
+    Route (String command){
 
-        // creating dummy object for testing purposes
+        int i=0, j=0;
 
-        shape = 1;
-        rectangleWidth = 40;
-        rectangleHeight = 40;
+        System.out.println("Command for route object:" + command); //test only - to remove!!
 
-        switch (shape){
+        String[] strings = command.split(" ");
+        String commandShape = strings[0];
+        String commandSides = "";
 
-            case 1: //Rectangle
-                error = calculateRouteRectangle(rectangleWidth, rectangleHeight);
+        for (j = 1; j < strings.length ; ++j){
+            commandSides += strings[j] + CS1810_Drawing.delimeter;
+        }
+       
+       
+        switch (commandShape){
+
+            case "R": //Rectangle
+                shapeToDraw = new Shape(commandShape, commandSides);
+                //error = calculateRouteRectangle(rectangleWidth, rectangleHeight);
+                
+               
+
+
+                //test only - to remove!!
+                System.out.println(shapeToDraw.getShapeNoOfEdges());
+                for (i = 1; i <= shapeToDraw.getShapeNoOfEdges(); i++){
+                    System.out.println("Side " + i + ": " + shapeToDraw.getShapeSide(i));
+                }
+                for (i = 1; i <= shapeToDraw.getShapeNoOfAngles(); i++){
+                    System.out.println("Angle " + i + ": " + shapeToDraw.getShapeAngle(i));
+                }
+
+
                 break;
-            case 2: //Triangle
-                error = calculateRouteTriangle(triangleSide1, triangleSide2, triangleSide3);
+            case "T": //Triangle
+                //error = calculateRouteTriangle(triangleSide1, triangleSide2, triangleSide3);
                 break;
         }
-
-
+        
 
     }
 
+/* to be moved in respecitve classes
 
     private int calculateRouteRectangle(int width, int height){
 
@@ -95,7 +181,6 @@ class Route{
         pathList.add(testMove107);
         pathList.add(testMove108);
 
-        noOfMoves = pathList.size();
 
         return(0);
 
@@ -122,13 +207,12 @@ class Route{
         pathList.add(testMove206);
 
 
-        noOfMoves = pathList.size();
 
         return(0);
 
     }
 
-
+*/
 
     public void printSteps(){
 
@@ -160,6 +244,9 @@ class Route{
 
 public class CS1810_Drawing {
 
+    //constants
+    public static final int rectangleAngle = 90;
+    public static final String delimeter = " ";
 
 
 	public static void main(final String[] args){
@@ -168,7 +255,9 @@ public class CS1810_Drawing {
 
         Finch HK_14 = new Finch();
 
-        Route testRoute = new Route();
+        Route testRoute = new Route("R 40 60");
+
+
 
         testRoute.printSteps();
 
