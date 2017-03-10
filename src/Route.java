@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Route {
 	
-    //actual command
+    //actual command string
     String actualCommand;
     //command shape - char represeting the shape ('T', 'R', ... or 'X' for exit)
     String commandShape;
@@ -16,12 +16,7 @@ public class Route {
     //vector of 'Path' objects
     ArrayList<Path> pathList = new ArrayList<Path>();
     
-
-
-
-
-
-    //constructor
+    //constructor - builds an object by getting the array of int representing the shape and an array of 'Path' representing the route to take
     Route (String command){
 
         //store actual command string
@@ -35,50 +30,56 @@ public class Route {
             commandSides += strings[j] + constants.DELIMETER;
         }
         //end of section
-       
 
         //calculating the shape to draw vector and the path depending on the requested shape type
         switch (commandShape){
 
             case "R": //Rectangle
+            case "r":
                 
-        //log - to remove
-                System.out.println("Rectangle selected");
-        //log - to remove
-                System.out.println("Creating shape based on sides: " + commandSides);
+                //log
+                //System.out.println("Rectangle selected");
+                //System.out.println("Creating shape based on sides: " + commandSides);
 
+                //calculates the array of int represanting the shape, from the command string
                 Rectangle tempR = new Rectangle();
                 shapeToDraw = tempR.getRectangleShape("R", commandSides);
-         //log - to remove
-                System.out.println("Shape to draw: " + shapeToDraw);
+                
+                //log
+                //System.out.println("Shape to draw: " + shapeToDraw);
 
+                //calculates the array of path steps
                 pathList = getShapePath(shapeToDraw);
                 break;
 
             case "T": //Triangle
+            case "t":
 
-        //log - to remove
-                System.out.println("Triangle selected");
-        //log - to remove
-                System.out.println("Creating shape based on sides: " + commandSides);
+                //log
+                //System.out.println("Triangle selected");
+                //System.out.println("Creating shape based on sides: " + commandSides);
 
+                //calculates the array of int represanting the shape, from the command string
                 Triangle tempT = new Triangle();
                 shapeToDraw = tempT.getTriangleShape("T", commandSides);
-         //log - to remove
-                System.out.println("Shape to draw: " + shapeToDraw);
 
+                //log
+                //System.out.println("Shape to draw: " + shapeToDraw);
+
+                //calculates the array of path steps
                 pathList = getShapePath(shapeToDraw);
                 break;
+
+            default:
+
+                //default case
+
+            break;
         }
         
-
     }
 
-
-
-
-
-    //method that calculates the path elements based on sides and angles of a shape
+    //method that calculates the path steps based on sides and angles of a shape
 
     public ArrayList<Path> getShapePath(ArrayList<Integer> shapeToCalculate){
 
@@ -89,7 +90,8 @@ public class Route {
 
         for (int i = 0; i < shapeToCalculate.size(); i += 2){
 
-            //calculating the straight movement for drawing a side
+            //calculating the straight movement for drawing a side - LHS and RHS wheels speeds are used in conjunction to calubration data and set target speed
+            //time to move is based on the formula time = distance / speed - also uses calibration data
             dist = shapeToCalculate.get(i);
             time = dist / (constants.FINCH_SPEED_TO_USE / 100 * constants.FINCH_CALIBRATED_SPEED_100) * constants.MILISEC_PER_SEC;
             tmpLHS = constants.FINCH_SPEED_TO_USE * constants.FINCH_LHSWHEEL_CALIBRATION / 100;
@@ -98,7 +100,10 @@ public class Route {
             temp = new Path(tmpLHS, tmpRHS, time);
             calculatedPathList.add(temp);
 
+
             //calculating the following turn as per specified angle.
+            //if angle is positive it will always turn to right
+            //dist represents the distance that a wheel should cover while the other wheel is stationary, so the robot is turned to the correct angle
 
             dist = shapeToCalculate.get(i+1) * constants.FINCH_FULL_TURN_DISTANCE / constants.FINCH_FULL_TURN_ANGLE;
             time = dist * constants.MILISEC_PER_SEC / (constants.FINCH_SPEED_TO_USE / 100 * constants.FINCH_CALIBRATED_SPEED_100);
@@ -131,36 +136,11 @@ public class Route {
         return(calculatedPathList);
     }
 
-
-
-
-
-    // method that prints path steps
-    public void printSteps(){
-
-        for(int i = 0 ; i < pathList.size(); i++){
-            System.out.print("LHS Speed: ");
-            System.out.print(pathList.get(i).getLHSspeed());
-            System.out.print("; RHS Speed: ");
-            System.out.print(pathList.get(i).getRHSspeed());
-            System.out.print("; for ");
-            System.out.print(pathList.get(i).getMoveTime());
-            System.out.println(" miliseconds");
-        }
-    }
-
-
-
-
-
     //returns the calculated path steps list
     public ArrayList<Path> getPath(){
 
         return(pathList);
     }
-
-
-
 
     //returns the shape of this objects
     public String getShapeType(){
@@ -168,18 +148,21 @@ public class Route {
         return(commandShape);
     }
 
+    //sets the executed state after the move methid carries out the command
     public void setExecutionState(int state){
 
         executed = state;
 
     }
 
+    //gets the executed state
     public int getExecutionState(){
 
         return(executed);
 
     }
 
+    //gets the actual command string used to create this object
     public String getActualCommand(){
 
         return(actualCommand);

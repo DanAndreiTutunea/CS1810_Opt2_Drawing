@@ -1,7 +1,10 @@
 
+
+//Objects of Path class record path steps (LHS wheel speed, RHS wheel speed and move time)
+
+
 public class Path {
 
-    
     private int lhsWheelSpeed, rhsWheelSpeed;
     private int timeMiliSeconds;
 
@@ -26,6 +29,5 @@ public class Path {
 
         return(timeMiliSeconds);
     }
-
 	
 }
