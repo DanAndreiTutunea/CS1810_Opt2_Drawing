@@ -1,272 +1,163 @@
+
+
 import java.util.ArrayList;
-
 import edu.cmu.ri.createlab.terk.robot.finch.Finch;
-
-
-
-
-
-class Path{
-    
-    private int lhsWheelSpeed, rhsWheelSpeed, timeMiliSeconds, timeSeconds;
-
-    Path(int lhs, int rhs, int time){
-        
-        lhsWheelSpeed = lhs;
-        rhsWheelSpeed = rhs;
-        timeMiliSeconds = time;
-        timeSeconds = time / 1000;
-    }
-
-    public int getLHSspeed(){
-
-        return(lhsWheelSpeed);
-    }
-
-    public int getRHSspeed(){
-
-        return(rhsWheelSpeed);
-    }
- 
-    public int getMoveTime(){
-
-        return(timeMiliSeconds);
-    }
-
-}
-
-
-
-class Shape{
-
-    private int noOfEdges = 0;
-    private int noOfAngles = 0;
-    ArrayList<Integer> elements = new ArrayList<Integer>();
-
-    Shape (String shapeType, String shapeString){
-
-        int i = 0, j = 0;
-        String[] stringParts = shapeString.split(CS1810_Drawing.delimeter);
-
-        switch(shapeType){
-
-            case "R":
-                // shape is a rectangle
-                // to use rectangle class here !!! - the following code is for testing only
-                for (j = 0; j < stringParts.length ; ++j){
-                    elements.add(Integer.parseInt(stringParts[j]));
-                    noOfEdges++;
-                    elements.add(CS1810_Drawing.rectangleAngle);
-                    noOfAngles++;
-                }
-                for (j = 0; j < stringParts.length ; ++j){
-                    elements.add(Integer.parseInt(stringParts[j]));
-                    noOfEdges++;
-                    elements.add(CS1810_Drawing.rectangleAngle);
-                    noOfAngles++;
-                }
-            break;
-            case "T":
-                // shape is a triangle
-            
-            break;
-        }
-        
-    }
-
-    public int getShapeNoOfEdges(){
-        return(noOfEdges);
-    }
-
-    public int getShapeNoOfAngles(){
-        return(noOfAngles);
-    }
-
-    public int getShapeSide(int x){
-        return(elements.get((x-1)*2));
-    }
-
-    public int getShapeAngle(int x){
-        return(elements.get(x*2-1));
-    }
-
-}
-
-/*
-class Rectangle{
-
-
-    private int rectangleEdge1 = 0;
-    private int rectangleEdge2 = 0;
-}
-*/
-
-class Route{
-
-    Shape shapeToDraw;
-    ArrayList<Path> pathList = new ArrayList<Path>();
-    private int error = 0;
-
-        /*
-            0 - no error;
-            1 - 
-
-        */
-
-
-    Route (String command){
-
-        int i=0, j=0;
-
-        System.out.println("Command for route object:" + command); //test only - to remove!!
-
-        String[] strings = command.split(" ");
-        String commandShape = strings[0];
-        String commandSides = "";
-
-        for (j = 1; j < strings.length ; ++j){
-            commandSides += strings[j] + CS1810_Drawing.delimeter;
-        }
-       
-       
-        switch (commandShape){
-
-            case "R": //Rectangle
-                shapeToDraw = new Shape(commandShape, commandSides);
-                //error = calculateRouteRectangle(rectangleWidth, rectangleHeight);
-                
-               
-
-
-                //test only - to remove!!
-                System.out.println(shapeToDraw.getShapeNoOfEdges());
-                for (i = 1; i <= shapeToDraw.getShapeNoOfEdges(); i++){
-                    System.out.println("Side " + i + ": " + shapeToDraw.getShapeSide(i));
-                }
-                for (i = 1; i <= shapeToDraw.getShapeNoOfAngles(); i++){
-                    System.out.println("Angle " + i + ": " + shapeToDraw.getShapeAngle(i));
-                }
-
-
-                break;
-            case "T": //Triangle
-                //error = calculateRouteTriangle(triangleSide1, triangleSide2, triangleSide3);
-                break;
-        }
-        
-
-    }
-
-/* to be moved in respecitve classes
-
-    private int calculateRouteRectangle(int width, int height){
-
-        //creating dummy path List - eventually should be properly calculated
-
-        Path testMove101 = new Path(100, 100, 1000);
-        Path testMove102 = new Path(90, 0, 1000);
-        Path testMove103 = new Path(100, 100, 1000);
-        Path testMove104 = new Path(90, 0, 1000);
-        Path testMove105 = new Path(100, 100, 1000);
-        Path testMove106 = new Path(90, 0, 1000);
-        Path testMove107 = new Path(100, 100, 1000);
-        Path testMove108 = new Path(90, 0, 1000);
-
-        pathList.add(testMove101);
-        pathList.add(testMove102);
-        pathList.add(testMove103);
-        pathList.add(testMove104);
-        pathList.add(testMove105);
-        pathList.add(testMove106);
-        pathList.add(testMove107);
-        pathList.add(testMove108);
-
-
-        return(0);
-
-    }
-
-
-
-    private int calculateRouteTriangle(int side1, int side2, int side3){
-
-        //creating dummy path List - eventually should be properly calculated
-
-        Path testMove201 = new Path(150, 150, 1000);
-        Path testMove202 = new Path(120, 0, 1000);
-        Path testMove203 = new Path(150, 150, 1000);
-        Path testMove204 = new Path(120, 0, 1000);
-        Path testMove205 = new Path(150, 150, 1000);
-        Path testMove206 = new Path(120, 0, 1000);
-
-        pathList.add(testMove201);
-        pathList.add(testMove202);
-        pathList.add(testMove203);
-        pathList.add(testMove204);
-        pathList.add(testMove205);
-        pathList.add(testMove206);
-
-
-
-        return(0);
-
-    }
-
-*/
-
-    public void printSteps(){
-
-        for(int i = 0 ; i < pathList.size(); i++){
-            System.out.print("LHS Speed: ");
-            System.out.print(pathList.get(i).getLHSspeed());
-            System.out.print("; RHS Speed: ");
-            System.out.print(pathList.get(i).getRHSspeed());
-            System.out.print("; for ");
-            System.out.print(pathList.get(i).getMoveTime());
-            System.out.println(" miliseconds");
-        }
-    }
-
-
-    public ArrayList<Path> getPath(){
-
-        return(pathList);
-
-    }
-
-}
-
-
-
-
-
-
+import java.util.Scanner;
 
 public class CS1810_Drawing {
-
-    //constants
-    public static final int rectangleAngle = 90;
-    public static final String delimeter = " ";
 
 
 	public static void main(final String[] args){
 
-        int movementError;
+        //variable declaration
+        String command="";
+        int movementError = 0, valid = 0;
+        boolean whileCondition = true;
 
+        Route requiredShape;
+        ArrayList<Route> requiredShapeList = new ArrayList<Route>();
+
+
+        //Finch robot init
         Finch HK_14 = new Finch();
 
-        Route testRoute = new Route("R 40 60");
+        while(whileCondition){
+
+            command = readCommand();
+
+            valid = validateCommand(command);
+            if (valid == constants.VALID_SUCCESSFUL && command != "X"){
+
+                requiredShape = new Route(command);
+                movementError = executeMovement(HK_14, requiredShape);
+                //movementError = 0; //temp statement
+                requiredShape.setExecutionState(movementError);
+                requiredShapeList.add(requiredShape);
 
 
+            }
+            else {
 
-        testRoute.printSteps();
+                System.out.print("Command not valid. Reason: ");
+                switch (valid) {
+                    
+                    case constants.VALID_ERROR_WRONG_NO_SIDES:
+                    System.out.println("Wrong number of sides for required shape ...");
+                    break;
 
-        movementError = executeMovement(HK_14, testRoute);
+                    case constants.VALID_ERROR_SIDE_SIZE:
+                    System.out.println("Shape sides sizes not allowed ...");
+                    break;
+
+                    case constants.VALID_ERROR_NOT_TRIANGLE:
+                    System.out.println("Given sizes cannot form a triangle ...");
+                    break;
+
+                    //System.out.println("Unspecified reason");
+
+                }
+
+            }
+
+            //System.out.println(command);
+            if (command.contains("X")) {  
+                System.out.println("Exiting ...");
+                whileCondition = false;
+            }
+        }
         
         
+        
+        printExecutedCommands(requiredShapeList);
+
+        //Finch disconnect
         HK_14.quit();
         System.exit(0);
     }
+
+
+
+
+
+    public static String readCommand(){
+
+        Scanner scan = new Scanner(System.in);
+        String command = scan.nextLine();
+        System.out.println(command);
+    	return(command);
+    }
+
+
+
+
+
+    public static int validateCommand(String commandToCheck){
+
+        int validateResult = constants.VALID_SUCCESSFUL;
+        int i=0, j=0;
+        String inputShape = "";
+
+
+        String[] stringElements = commandToCheck.split(constants.DELIMETER);
+        ArrayList<Integer> intElements = new ArrayList<Integer>();
+        inputShape = stringElements[0];
+        for (j = 1; j < stringElements.length ; ++j){
+            intElements.add(Integer.parseInt(stringElements[j]));
+        }
+
+        switch (inputShape) {
+
+            case "R":
+
+                if (intElements.size() != 2) validateResult = constants.VALID_ERROR_WRONG_NO_SIDES;
+                for (i = 0; i < intElements.size(); i++) 
+                    if (intElements.get(i) < constants.RECTANGLE_MIN_SIDE_SIZE || intElements.get(i) > constants.RECTANGLE_MAX_SIDE_SIZE) 
+                        validateResult = constants.VALID_ERROR_SIDE_SIZE;
+
+            break;
+
+            case "T":
+
+                if (intElements.size() != 3) validateResult = constants.VALID_ERROR_WRONG_NO_SIDES;
+                for (i = 0; i < intElements.size(); i++)
+                    if (intElements.get(i) < constants.TRIANGLE_MIN_SIDE_SIZE || intElements.get(i) > constants.TRIANGLE_MAX_SIDE_SIZE) 
+                        validateResult = constants.VALID_ERROR_SIDE_SIZE;
+                if (intElements.get(0) >= intElements.get(1) + intElements.get(2)) validateResult = constants.VALID_ERROR_NOT_TRIANGLE;
+                if (intElements.get(1) >= intElements.get(0) + intElements.get(2)) validateResult = constants.VALID_ERROR_NOT_TRIANGLE;
+                if (intElements.get(2) >= intElements.get(0) + intElements.get(1)) validateResult = constants.VALID_ERROR_NOT_TRIANGLE;
+
+            break;
+
+
+        }
+
+
+
+
+        return(validateResult);
+    }
+
+
+
+
+
+    public static void printExecutedCommands(ArrayList<Route> listToPrint){
+
+        Route tempRoute;
+
+         for(int i = 0 ; i < listToPrint.size(); i++){
+
+                tempRoute = listToPrint.get(i);
+                System.out.print("Drawing " + (i+1) + ": " + tempRoute.getActualCommand() + " - ");
+                if (tempRoute.getExecutionState() == 0) System.out.println("Executed successfuly.");
+                else System.out.println("Execution failed.");
+
+
+         }
+
+    }  
+
+
 	
 
     public static int executeMovement(Finch John, Route routeToDo){
@@ -291,6 +182,8 @@ public class CS1810_Drawing {
         return(error);
     }
 	
+	
+
 	
 	
 }
