@@ -20,7 +20,7 @@ public class CS1810_Drawing {
         //Finch robot init
         Finch HK_14 = new Finch();
 
-        //program core to run until the exit command is recieved (command string first letter is "X")
+        //program core to run until the exit command is received (command string first letter is "X")
         while(whileCondition){
 
             //call for function that reads the command and returns the command string
@@ -89,7 +89,7 @@ public class CS1810_Drawing {
 
         Scanner scan = new Scanner(System.in);
         String command = scan.nextLine();
-        System.out.println(command);
+        //System.out.println(command);
     	return(command);
     }
 

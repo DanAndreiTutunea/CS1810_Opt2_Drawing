@@ -8,7 +8,7 @@ public class Route {
     //command shape - char represeting the shape ('T', 'R', ... or 'X' for exit)
     String commandShape;
     
-    //result of route execution (0 - never executed, 1 - executed succesfully, 2+ - execution error)
+    //result of route execution (0 - never executed, 1 - executed sucessfuly, 2+ - execution error)
     int executed = 0;
 
     //vector of int values re[presenting the shape to draw, structured as [side 1, angle 1, side 2, angle 2, ..... side n, angle n]
@@ -41,7 +41,7 @@ public class Route {
                 //System.out.println("Rectangle selected");
                 //System.out.println("Creating shape based on sides: " + commandSides);
 
-                //calculates the array of int represanting the shape, from the command string
+                //calculates the array of int representing the shape, from the command string
                 Rectangle tempR = new Rectangle();
                 shapeToDraw = tempR.getRectangleShape("R", commandSides);
                 
@@ -59,7 +59,7 @@ public class Route {
                 //System.out.println("Triangle selected");
                 //System.out.println("Creating shape based on sides: " + commandSides);
 
-                //calculates the array of int represanting the shape, from the command string
+                //calculates the array of int representing the shape, from the command string
                 Triangle tempT = new Triangle();
                 shapeToDraw = tempT.getTriangleShape("T", commandSides);
 
